@@ -1,0 +1,14 @@
+class NamedType<T>
+{
+	T value;
+}
+
+class ValueCheckedType<T> : NamedType<T>
+{
+	virtual Bool CheckValue();
+
+	Bool PostDeserialize()
+	{
+		return CheckValue();
+	}
+}

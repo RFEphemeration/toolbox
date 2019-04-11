@@ -1,0 +1,80 @@
+enum ComparatorResult { Reject, Neutral, Accept }
+
+class Message<P1..PN : ParameterComponent>
+{
+	P1 p1;
+	...
+	PN pN;
+}
+
+class Comparator<M : Message>
+{
+	ComparatorComponent<M.P1> c1;
+	...
+	ComparatorComponent<M.PN> cN;
+
+	ComparatorResult Evaluate (Message message);
+}
+
+enum ConsumeBehavior { None, Channel, All }
+
+class Listener
+{
+	Comparator<Message> comparator;
+	Delegate response;
+
+	Int priority;
+	String channel;
+	
+	ConsumeBehavior onAccept;
+	Bool unregisterOnAccept;
+}
+
+class Messenger : Singleton<Messenger>
+{
+	Queue<Message> queue;
+	Table<MessageType, List<Listener> > listeners;
+
+	void Register(Listener listener);
+	void Unregister(Listener listener);
+	void Enqueue(Message message);
+
+	void Broadcast(Message message)
+	{
+		Set<Listener> toUnregister;
+		Set<String> consumedChannels;
+
+		foreach (listener : listeners[message.type])
+		{
+			if (listener.channel != ""
+				&& consumedChannels.Contains(listener.channel))
+			{
+				continue;
+			}
+			else if (!listener.comparator.Evaluate(message))
+			{
+				continue;
+			}
+
+			listener.response(message);
+
+			if (listener.unregisterOnAccept)
+			{
+				toUnregister.Insert(listener);
+			}
+
+			if (listener.onAccept == ConsumeBehavior::Channel)
+			{
+				consumedChannels.Insert(listener.channel);
+			}
+			else if (listener.onAccept == ConsumeBehavior::All)
+			{
+				break;
+			} 
+		}
+
+		foreach (listener : toUnregister) {
+			Unregister(listener);
+		}
+	}
+}

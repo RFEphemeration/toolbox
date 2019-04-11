@@ -1,0 +1,37 @@
+// First type is shared between entries in a table
+
+class DisplayContext : NamedType<String> { }
+
+class Item
+{
+	Table<DisplayContext, ItemDisplay> contextualDisplays;
+}
+
+class ItemDisplay
+{
+	// assumed to be another DisplayContext on the same Item
+	DisplayContext inheritFrom;
+	String title;
+	...
+}
+
+// Second type is shared between different objects via an assumed manager
+
+class Mission
+{
+	Enemies enemies;
+	Rewards rewards;
+}
+
+class MissionManager
+{
+	Table<String, Enemies> enemiesTemplateData;
+}
+
+class Enemies
+{
+	// looked up in MissionManager.enemiesTemplateData
+	String templateName;
+	List<CharacterID> characters;
+	List<Int> levels;
+}
