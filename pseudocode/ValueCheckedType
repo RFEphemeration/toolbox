@@ -1,0 +1,28 @@
+class NamedType<T, Tag>
+{
+	T value;
+}
+
+class ValueCheckedTypeTag<T>
+{
+	virtual Bool IsValid(T value);
+}
+
+class ValueCheckedType<T, Tag : ValueCheckedTypeTag<T>>
+{
+	T value
+
+	Bool PostDeserialize()
+	{
+		return Tag::IsValid(value);
+	}
+
+	static Nullable<ValueCheckedType<T, Tag>> TryCreate(T value)
+	{
+		if (!Tag::IsValid(value))
+		{
+			return null;
+		}
+		return new ValueCheckedType<T, Tag>>(value);
+	}
+}
