@@ -1,0 +1,33 @@
+class HashedString
+{
+	private static const UInt32 LookupSize = 0x20000;
+	private static Ptr<String>[LookupSize] Lookup{}; // initialize Lookup[0] = "";
+	
+	private UInt32 handle;
+	
+	HashedString(String& value)
+	{
+		handle = Hash32(value);
+		Ptr<String> pValue = new String(value);
+		UInt32 uCollisions = 0;
+		for (; uCollisions < LookupSize; ++uCollisions)
+		{
+			// this is a new value and the current handle is empty
+			if(AtomicSetIfEqual(nullptr, Lookup[handle], pValue))
+			{
+				break;
+			}
+			// this value already exists in the hash at the current handle
+			else if (Lookup[handle].GetValue() == pValue.GetValue())
+			{
+				break;
+			}
+			// the current handle is full and not equal to value, try the next one
+			handle = (handle + 1) % LookupSize;
+		}
+		if (uCollisions >= LookupSize)
+		{
+			LOG_ERROR("Ran out of HashedString space");
+		}
+	}
+}
