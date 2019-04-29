@@ -1,0 +1,9 @@
+Favor long descriptive names over obfuscated ones
+	PopFrontIfSetAndResetIfEmpty
+
+Features should have a single grepable term that is used in every distinct place related to that feature
+A shared namespace can be a replacement for this but not always, because of limitations of find
+	Growth -> GrowthPerimeter, GrowthPerimeterConfig, GrowthDirector, GrowthSelector
+
+Accessor prefixes have implications about cost complexity
+	Get, Find, Compute, TryGet, GetCached, Do
