@@ -1,0 +1,55 @@
+class TestLog : Singleton<TestLog>
+{
+	// this can be used for all kinds of test results
+	// such as the before/after state of running a command
+	// or the input/output of a function
+	// as well as warnings for wrong behavior that are known ship
+	public void CompareAndWrite(FilePath file, String testName, JSON::Object testResults)
+	{
+		// cache to avoid re-parsing the same file for every test
+		if (!fileContents.ContainsKey(file))
+		{
+			fileContents[file] = JSON::Parse(ReadOrMakeFile(file));
+		}
+		JSON::Table& tests = fileContents[file];
+		if (tests.ContainsKey(testName) && JSON::Equals(tests[testName],testResults))
+		{
+			// we have already recorded this test result, and it has not changed since the last run
+			// still an error
+			return;
+		}
+		else if (!tests.ContainsKey(testName) && testResults.IsNull())
+		{
+			// this is correct behavior
+			return;
+		}
+		else if (tests.ContainsKey(testName))
+		{
+			POP_DEBUG_DIALOG(
+				"Behavior for %s has changed. Diff:\n%.*s",
+				testName,
+				50,
+				JSON::Diff(tests[testName], testResults).ToString());
+		}
+		else
+		{
+			POP_DEBUG_DIALOG(
+				"New test with name %s, Results:\n%.*s",
+				testName,
+				50,
+				testResults.ToString());
+		}
+		
+		if (testResults.IsNull())
+		{
+			tests.Remove(testName);
+		}
+		else
+		{
+			tests[testName] = testResults;
+		}
+		OverwriteFile(file, contents.PrettyPrint(JSON::Alphabetical | JSON::TabularIndentation));
+	}
+	
+	private HashTable<FilePath, JSON::Table> fileContents;
+}
