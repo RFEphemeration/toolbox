@@ -15,7 +15,6 @@ class TestLog : Singleton<TestLog>
 		if (tests.ContainsKey(testName) && JSON::Equals(tests[testName],testResults))
 		{
 			// we have already recorded this test result, and it has not changed since the last run
-			// still an error
 			return;
 		}
 		else if (!tests.ContainsKey(testName) && testResults.IsNull())
