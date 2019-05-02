@@ -1,5 +1,7 @@
 class HashedString
 {
+	// could maybe support expanding lookup size at runtime but this would mean
+	// searching every previous past lookup size in sequence at construction
 	private static const UInt32 LookupSize = 0x20000;
 	private static Ptr<String>[LookupSize] Lookup{}; // initialize Lookup[0] = "";
 	
@@ -7,13 +9,18 @@ class HashedString
 	
 	HashedString(String& value)
 	{
-		handle = Hash32(value);
+		if (value.IsEmpty())
+		{
+			handle = 0;
+			return;
+		}
+		handle = Hash32(value) % LookupSize;
 		Ptr<String> pValue = new String(value);
 		UInt32 uCollisions = 0;
 		for (; uCollisions < LookupSize; ++uCollisions)
 		{
 			// this is a new value and the current handle is empty
-			if(AtomicSetIfEqual(nullptr, Lookup[handle], pValue))
+			if(AtomicSetIfEqual(Lookup[handle], nullptr, pValue))
 			{
 				break;
 			}
