@@ -1,0 +1,44 @@
+// to coordinate what gets played, when without having
+// to transition between all sorts of different states
+// you can instead spider out from a single one
+// could use inheritence to have different kinds of performances
+// including ones that don't actually go to a different state
+// it also might be nice to check if the next state would be the same
+// as the current, and not transition back and forth
+// or at least not destroy and re-allocate all of the parts 
+class UIStateMachinePerfomanceQueue : UIState
+{
+	static const UIStateName emptyPerformance("EmptyPerformance");
+
+	Queue<UIStateMachinePerformance> queue;
+
+	void Tick()
+	{
+		if (queue.IsEmpty())
+		{
+			return;
+		}
+		if (UIStateMachine::GetCurrentState() != emptyPerformance)
+		{
+			return;
+		}
+		queue.PopFront().Play();
+	}
+}
+
+interface UIStateMachinePerformance
+{
+	UITransitionName transition;
+	StateDataTable data;
+
+	void Play()
+	{
+		foreach (key, value : data)
+		{
+			StateData::Set(key, value);
+		}
+
+		UIStateMachine::SendTransition(transition);
+	}
+}
+

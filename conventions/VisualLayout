@@ -1,0 +1,14 @@
+Keep origins of children meaningful
+	arbitrary offsets that then need to be offset back quickly make it hard to position things
+	
+Try to pick a spacing convention and stick to it
+	i.e. everything will have 0 upper and right margin by default
+	or everything will have a margin of 5 on all sides
+	so that every kind of sibling can be re-orderable.
+
+If creating something that will be overridden
+	try to make the parts the change as few and seperate as possible
+
+Layering views where some views are used in multiple contexts, both for re-use and separation
+
+Keeping the visual state machine simple is probably better than enabling very complex flows

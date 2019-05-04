@@ -7,3 +7,9 @@ A shared namespace can be a replacement for this but not always, because of limi
 
 Accessor prefixes have implications about cost complexity
 	Get, Find, Compute, TryGet, GetCached, Do
+
+Data files should follow an enforced naming pattern
+	If they all use the same pattern and you want to change it, you can
+	If they're all different you won't be able to
+
+Distinguish user-initiated actions from other methods

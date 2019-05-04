@@ -1,3 +1,4 @@
+// todo: think about how intercepting messages could work smoothly
 enum ComparatorResult { Reject, Neutral, Accept }
 
 class Message<P1..PN : ParameterComponent>
