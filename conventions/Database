@@ -1,0 +1,9 @@
+A middle layer like Django often hides complexity rather than making things easier
+	Learn how the actual database is doing things
+	Expose it as much as possible, maybe not worth it to use an ORM
+
+If you're doing something complicated maybe you should reconsider what you're doing rather than twisting into knots to make it possible
+
+Forward/backward migrations keep a history of states
+
+Balance of multiple round trips cost to remote database and pressure of doing function computation on the db machine

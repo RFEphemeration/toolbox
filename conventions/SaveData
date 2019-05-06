@@ -1,0 +1,8 @@
+Migrations should be applied before loading into the object model, so that you don't need to keep deprecated members
+
+Destructive migrations should be very specific so that they do not cause unintended loss
+
+It's far better to abort entirely than get partway through a migration
+
+In-sync remote and local saves can be stored as a numbered checkpoint and series of diffs
+	Coordinating this system to be reliable across networks is hard
