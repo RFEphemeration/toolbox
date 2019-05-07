@@ -1,0 +1,8 @@
+Send email on errors only if there is action that you are going to take as a result
+	Otherwise you're just training people to ignore error emails
+
+Old requests should expire, or maybe have a single endpoint that accepts/logs every expired request
+	rather than having backwards compatability forever
+
+Reading the list of response codes can help you develop an API that meets expectations
+	400 bad request for things that are no longer valid
