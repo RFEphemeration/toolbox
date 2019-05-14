@@ -7,3 +7,5 @@ If you're doing something complicated maybe you should reconsider what you're do
 Forward/backward migrations keep a history of states
 
 Balance of multiple round trips cost to remote database and pressure of doing function computation on the db machine
+
+Very quickly you run into the limits of what is knowable. Information propogation and certainty. When did something happen is unknowable. What's the other keyword here?
