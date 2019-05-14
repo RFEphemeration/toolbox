@@ -5,6 +5,8 @@ A middle layer like Django often hides complexity rather than making things easi
 If you're doing something complicated maybe you should reconsider what you're doing rather than twisting into knots to make it possible
 
 Forward/backward migrations keep a history of states
+	some migrations are less costly than others
+	https://www.braintreepayments.com/blog/safe-operations-for-high-volume-postgresql/
 
 Balance of multiple round trips cost to remote database and pressure of doing function computation on the db machine
 
