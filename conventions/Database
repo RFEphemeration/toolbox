@@ -6,8 +6,27 @@ If you're doing something complicated maybe you should reconsider what you're do
 
 Forward/backward migrations keep a history of states
 	some migrations are less costly than others
-	https://www.braintreepayments.com/blog/safe-operations-for-high-volume-postgresql/
-
 Balance of multiple round trips cost to remote database and pressure of doing function computation on the db machine
 
 Very quickly you run into the limits of what is knowable. Information propogation and certainty. When did something happen is unknowable. What's the other keyword here?
+
+
+https://www.braintreepayments.com/blog/safe-operations-for-high-volume-postgresql/
+Can do these safely
+	Add a new column
+	Drop a column
+	Add an index concurrently
+	Drop a constraint (for example, non-nullable)
+	Add a default value to an existing column
+
+Can't do these without significant downtime             Our workaround
+	Add an index                                    Add the index using the CONCURRENTLY keyword
+	Change the type of a column                     Add a new column, change the code to write to both columns, and backfill the new column
+	Add a column with a default                     Add column, add default as a separate command, and backfill the column with the default value
+	Add a column that is non-nullable               Create a new table with the addition of the non-nullable column, write to both tables, backfill, and then switch to the new table[1]
+	Add a column with a unique constraint           Add column, add unique index concurrently, and then add the constraint onto the table[2]
+	VACUUM FULL                                     We use pg̲repack instead
+[Notes]
+1. This workaround is incredibly onerous, and we very rarely do it. We try to be really careful when creating new tables and figuring out the initial set of non-nullable columns.
+2. For example: CREATE UNIQUE INDEX CONCURRENTLY token_is_unique ON large_table(token); ALTER TABLE large_table ADD CONSTRAINT token UNIQUE USING INDEX token_is_unique;
+3. Dropping a column is very quick, but PostgreSQL won’t reclaim the disk space until you run a “VACUUM FULL” or use another tool like pg_repack.
