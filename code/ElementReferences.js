@@ -92,13 +92,14 @@ class ReferenceNamespace {
 			delete this.dependency_queues[dependent_element];
 		}
 	}
+
+	destructure() {
+		return { ref: this.ref.bind(this), get: this.get.bind(this), dict : this.references };
+	}
 }
 
 let global_reference_namespace = new ReferenceNamespace("global");
-let ref = global_reference_namespace.ref.bind(global_reference_namespace);
-let get = global_reference_namespace.get.bind(global_reference_namespace);
-let references = global_reference_namespace.references;
-
+let {ref, get, dict : references} = global_reference_namespace.destructure();
 
 /////// Other options considered //////
 
