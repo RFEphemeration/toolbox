@@ -82,7 +82,10 @@ class ReferenceNamespace {
 			this.dependency_queues[dependent_element].delete(name);
 			if (this.dependency_queues[dependent_element].size == 0) {
 				this.try_refresh(dependent_element);
-				to_delete.push(dependent_element);
+				// check again in case more things were added during this try_refresh;
+				if (this.dependency_queues[dependent_element].size == 0) {
+					to_delete.push(dependent_element);
+				}
 			}
 		}
 		for (const dependent_element of to_delete) {
