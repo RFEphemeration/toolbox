@@ -1,0 +1,21 @@
+
+
+
+keep previous frame
+apply transformations based on
+	camera movement
+	camera rotation
+	object movement
+	object rotation
+	object animation <--- most challenging
+
+	if two pixels from a previous frame overlap in the new frame, we could take just the one in the front, or we could blend between them
+
+add new rays as proportional value over transformed frame
+	if new space / previous occluded use 100% of the ray value
+	otherwise use annealing value based on how long things have stayed the same?
+	or just a fixed moderate new amount, like 10-33%
+
+
+
+
