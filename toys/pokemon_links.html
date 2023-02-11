@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+	.links {
+		display: flex;
+		flex-flow: column nowrap;
+		width: fit-content;
+		height: fit-content;
+		padding: 0.5rem 1.5rem 1rem 1.5rem;
+		background-color: lightgrey;
+		border-radius: 1rem;
+	}
+
+	.links a {
+		display: block;
+		font-size: 1.1rem;
+		line-height: 1.33;
+		text-decoration: none;
+		color: #829;
+	}
+
+	.links h1 {
+		margin: 0.5rem 0;
+	}
+	body {
+		display: flex;
+		flex-flow: row wrap;
+		column-gap: 2rem;
+		row-gap: 2rem;
+		padding: 2rem;
+		margin: 0;
+	}
+</style>
+<script src="../code/imperative-html-subset.js"></script>
+</head>
+<body>
+<script>
+	const links = {
+		weight : "https://pokemondb.net/pokedex/stats/height-weight",
+		stats: "https://pokemondb.net/pokedex/stats/gen1",
+		friendship_evo: "https://pokemondb.net/evolution/friendship",
+		trade_evo: "https://pokemondb.net/evolution/trade",
+		tms: "https://pokemondb.net/heartgold-soulsilver/tms",
+		hms: "https://pokemondb.net/heartgold-soulsilver/hms",
+		tutors: "https://pokemondb.net/mechanics/move-tutors#tutor-hgss",
+		weather: "https://www.ign.com/wikis/pokemon-heartgold-soulsilver-version/Weather",
+		moveset_calculator: "https://www.serebii.net/games/moveset.shtml",
+		catch_calculator: "https://veekun.com/dex/gadgets/pokeballs",
+		apricorns: "https://www.serebii.net/heartgoldsoulsilver/apricorns.shtml",
+		pkhex: "https://projectpokemon.org/home/files/file/1-pkhex/",
+		pkhex_trade_evo_guide: "https://projectpokemon.org/home/forums/topic/58800-best-way-to-simulate-trades-in-pkhex/",
+		tier_list: "https://www.smogon.com/ingame/guides/hgss_ingame_tier",
+		training_guide: "https://www.dragonflycave.com/johto/places-to-train",
+		phone: "https://www.serebii.net/heartgoldsoulsilver/pokegearphone.shtml",
+		battle_frontier: "https://www.serebii.net/heartgoldsoulsilver/battlefrontier.shtml",
+		pokeathalon: "https://www.serebii.net/heartgoldsoulsilver/pokeathlon.shtml",
+		headbutt_locations: "http://www.psypokes.com/hgss/headbutt.php",
+	};
+	pokemon = [
+		'slowbro',
+		'lapras',
+		'umbreon',
+		'skarmory',
+	];
+
+	const {section, div, a, h1, br} = html.declare('section div a h1 br');
+
+	html.insert(section({class: 'links'},
+		h1({}, "Links"),
+		Object.entries(links).map(([text, href]) =>
+			a({target: '_blank', href}, text.replaceAll("_", " "))
+		)
+	));
+
+	html.insert(section({class: 'links'},
+		h1({}, "Pokemon"),
+		pokemon.map(name =>
+			div({ style: {
+					display: 'flex',
+					column_gap: '1rem',
+					justify_content: 'space-between'}},
+				a({target: '_blank', href: `https://pokemondb.net/pokedex/${name}`}, name),
+				a({target: '_blank', href: `https://pokemondb.net/pokedex/${name}/moves/4`}, 'moves')
+			),
+		)
+	));
+</script>
+</body>
+</html>
