@@ -8,14 +8,14 @@ let program_data = {
 
 div({class: "counter_wrapper"},
 	button({
-		onclick : (event) => {
+		onclick(event) {
 			program_data.count++;
 			references.counter_display.refresh();
 		},
 	}),
 	ref("counter_display", span({
-		refresh : (self) => {
-			self.innerText = program_data.count;
+		refresh() {
+			this.innerText = program_data.count;
 		},
 	}))
 );
@@ -37,11 +37,11 @@ class ReferenceNamespace {
 	// if refresh is called on creation, you can only reference things defined above you in refresh
 	// if you want to reference something that comes later, you can use get("") instead and it will
 	// update the dependency queue
+	// we could also consider using connectedCallback for when an element is added to the dom (will it be called on all of them or just the parent ones?)
 	ref(name, element) {
 		this.references[name] = element;
 		this.update_dependencies(name);
 		if ('refresh' in element) {
-			element.refresh.bind(element);
 			this.try_refresh(element);
 		}
 		return element;
