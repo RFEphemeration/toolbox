@@ -40,6 +40,7 @@
 		weight : "https://pokemondb.net/pokedex/stats/height-weight",
 		stats: "https://pokemondb.net/pokedex/stats/gen1",
 		friendship_evo: "https://pokemondb.net/evolution/friendship",
+		friendship_rater: "http://www.psypokes.com/dpphgss/happiness.php",
 		trade_evo: "https://pokemondb.net/evolution/trade",
 		tms: "https://pokemondb.net/heartgold-soulsilver/tms",
 		hms: "https://pokemondb.net/heartgold-soulsilver/hms",
@@ -56,15 +57,19 @@
 		battle_frontier: "https://www.serebii.net/heartgoldsoulsilver/battlefrontier.shtml",
 		pokeathalon: "https://www.serebii.net/heartgoldsoulsilver/pokeathlon.shtml",
 		headbutt_locations: "http://www.psypokes.com/hgss/headbutt.php",
+		randomizer_evo_guide: "https://pokehacks.dabomstew.com/randomizer/changedevos.php",
+		natures: "https://pokemondb.net/mechanics/natures",
 	};
 	pokemon = [
 		'slowbro',
 		'lapras',
 		'umbreon',
 		'skarmory',
+		'walrein',
 	];
 
-	const {section, div, a, h1, br} = html.declare('section div a h1 br');
+	const {section, div, a, h1, br, button, span} = html;
+	const {ref, refs} = html.bind();
 
 	html.insert(section({class: 'links'},
 		h1({}, "Links"),
@@ -84,6 +89,28 @@
 				a({target: '_blank', href: `https://pokemondb.net/pokedex/${name}/moves/4`}, 'moves')
 			),
 		)
+	));
+
+	const data = {
+		counter : 0,
+	};
+
+	html.insert(div({},
+		button({
+			onclick() {
+				data.counter += 1;
+				refs.counter_display.refresh()
+			},
+			style : {
+				width: 'fit-content',
+				height: '2rem',
+			},
+		}, "increment"),
+		ref('counter_display', div({
+			refresh() {
+				this.innerText = data.counter;
+			}
+		}))
 	));
 </script>
 </body>
