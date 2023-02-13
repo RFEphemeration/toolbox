@@ -31,6 +31,13 @@
 		padding: 2rem;
 		margin: 0;
 	}
+
+	button {
+		background-color: lightgrey;
+		border: 1px solid black;
+		border-radius: 1rem;
+		padding: 0.5rem 1rem;
+	}
 </style>
 <script src="../code/imperative-html-subset.js"></script>
 </head>
@@ -64,8 +71,13 @@
 		'slowbro',
 		'lapras',
 		'umbreon',
+		'leafeon',
 		'skarmory',
 		'walrein',
+		'heracross',
+		'steelix',
+		'houndoom',
+		'weavile',
 	];
 
 	const {section, div, a, h1, br, button, span} = html;
@@ -91,26 +103,23 @@
 		)
 	));
 
-	const data = {
-		counter : 0,
-	};
+	data.set({
+		counter: 0,
+	});
 
 	html.insert(div({},
 		button({
 			onclick() {
 				data.counter += 1;
-				refs.counter_display.refresh()
-			},
-			style : {
-				width: 'fit-content',
-				height: '2rem',
+				data.notify();
 			},
 		}, "increment"),
-		ref('counter_display', div({
+		div({
+			listen: ['counter'],
 			refresh() {
 				this.innerText = data.counter;
-			}
-		}))
+			},
+		})
 	));
 </script>
 </body>
