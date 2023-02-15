@@ -21,11 +21,9 @@ const html = new Proxy({
 				}
 			} else if (attr == "listen") {
 				if (Array.isArray(attributes[attr])) {
-					for (const name of attributes[attr]) {
-						data.listen(name, parent);
-					}
+					data.listen(parent, ...attributes[attr]);
 				} else {
-					data.listen(attributes[attr], parent);
+					data.listen(parent, attributes[attr]);
 				}
 			} else if (typeof attributes[attr] == "function") {
 				parent[attr] = attributes[attr];
@@ -48,6 +46,9 @@ const html = new Proxy({
 	insert(...elements) {
 		let script = document.currentScript;
 		for (let element of elements) {
+			if (typeof element == 'string') {
+				element = document.createTextNode(element);
+			}
 			script.parentNode.insertBefore(element, script);
 		}
 	},
@@ -72,20 +73,25 @@ const html = new Proxy({
 const data = new Proxy({
 	_listeners: {},
 	_dirty: new Set(),
-	listen(name, listener) {
-		if (!(name in this._listeners)) {
-			this._listeners[name] = [];
+	listen(listener, ...names) {
+		for (const name of names) {
+			if (!(name in this._listeners)) {
+				this._listeners[name] = [];
+			}
+			this._listeners[name].push(listener);
 		}
-		this._listeners[name].push(listener);
 	},
 
-	mark_dirty(name) {
-		this._dirty.add(name);
+	// use when modifying an array/object
+	mark_dirty(...names) {
+		for (const name of names) {
+			this._dirty.add(name);
+		}
 	},
 
-	notify() {
+	notify(...names) {
 		let listeners = new Set();
-		for (const name of this._dirty) {
+		for (const name of (names.length ? names : this._dirty)) {
 			for (const listener of this._listeners[name]) {
 				listeners.add(listener);
 			}
@@ -93,7 +99,13 @@ const data = new Proxy({
 		for (const listener of listeners) {
 			listener.refresh();
 		}
-		this._dirty.clear();
+		if (names.length) {
+			for (const name of names) {
+				this._dirty.delete(name);
+			}
+		} else {
+			this._dirty.clear();
+		}
 	},
 
 	set(values) {
@@ -115,7 +127,6 @@ const data = new Proxy({
 				}
 			});
 		}
-
 		for (const key in values) {
 			this[name][key] = values[key];
 		}

@@ -81,7 +81,6 @@
 	];
 
 	const {section, div, a, h1, br, button, span} = html;
-	const {ref, refs} = html.bind();
 
 	html.insert(section({class: 'links'},
 		h1({}, "Links"),
@@ -102,25 +101,59 @@
 			),
 		)
 	));
+</script>
 
-	data.set({
-		counter: 0,
-	});
+<div style="display: flex; flex-flow: column nowrap; align-items: center;">
+	<script>
+		data.set({
+			counter: 0,
+		});
 
-	html.insert(div({},
-		button({
-			onclick() {
-				data.counter += 1;
-				data.notify();
-			},
-		}, "increment"),
-		div({
-			listen: ['counter'],
-			refresh() {
+		html.insert(
+			button({
+				onclick() {
+					data.counter += 1;
+					data.notify();
+				},
+			}, "increment"),
+			div({
+				listen: ['counter'],
+				refresh() {
+					this.innerText = data.counter;
+				},
+			})
+		);
+
+		const refreshers = {
+			counter() {
 				this.innerText = data.counter;
-			},
-		})
-	));
+			}
+		}
+
+		const settings = {
+			hello : "hello,",
+			name : "Farb",
+		}
+	</script>
+	<button onclick="data.counter += 1; data.notify();">increment inline</button>
+	<div data-listen="counter" data-refresh="this.innerText = data.counter;"></div>
+	<div data-listen="counter" data-refresh-name="counter"></div>
+	<script>document.write(`${settings.hello}`);</script>
+	<script>html.insert(`${settings.name}`);</script>
+</div>
+
+<script type="text/javascript">
+	for (const listener of document.querySelectorAll('[data-listen]')) {
+		if ('refresh' in listener.dataset) {
+			listener.refresh = Function(listener.dataset.refresh);
+		} else if ('refreshName' in listener.dataset) {
+			listener.refresh = refreshers[listener.dataset.refreshName];
+		} else {
+			continue;
+		}
+		data.listen(listener, ...listener.dataset.listen.split(' '));
+		listener.refresh();
+	}
 </script>
 </body>
 </html>
