@@ -39,6 +39,7 @@
 		padding: 0.5rem 1rem;
 	}
 </style>
+<script src="../code/utils.js"></script>
 <script src="../code/imperative-html-subset.js"></script>
 </head>
 <body>
@@ -124,36 +125,27 @@
 			})
 		);
 
-		const refreshers = {
+		const refresh = {
 			counter() {
 				this.innerText = data.counter;
-			}
-		}
+			},
+		};
 
 		const settings = {
 			hello : "hello,",
 			name : "Farb",
-		}
+		};
+
 	</script>
 	<button onclick="data.counter += 1; data.notify();">increment inline</button>
 	<div data-listen="counter" data-refresh="this.innerText = data.counter;"></div>
-	<div data-listen="counter" data-refresh-name="counter"></div>
+	<div data-listen="counter" data-refresh-path="refresh.counter"></div>
 	<script>document.write(`${settings.hello}`);</script>
 	<script>html.insert(`${settings.name}`);</script>
 </div>
 
 <script type="text/javascript">
-	for (const listener of document.querySelectorAll('[data-listen]')) {
-		if ('refresh' in listener.dataset) {
-			listener.refresh = Function(listener.dataset.refresh);
-		} else if ('refreshName' in listener.dataset) {
-			listener.refresh = refreshers[listener.dataset.refreshName];
-		} else {
-			continue;
-		}
-		data.listen(listener, ...listener.dataset.listen.split(' '));
-		listener.refresh();
-	}
+	data.query_listeners();
 </script>
 </body>
 </html>

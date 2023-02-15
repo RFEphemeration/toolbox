@@ -131,6 +131,20 @@ const data = new Proxy({
 			this[name][key] = values[key];
 		}
 	},
+
+	query_listeners() {
+		for (const listener of document.querySelectorAll('[data-listen]')) {
+			if ('refresh' in listener.dataset) {
+				listener.refresh = Function(listener.dataset.refresh);
+			} else if ('refreshPath' in listener.dataset) {
+				listener.refresh = utils.get(window, listener.dataset.refreshPath.split('.'));
+			} else {
+				continue;
+			}
+			data.listen(listener, ...listener.dataset.listen.split(' '));
+			listener.refresh();
+		}
+	},
 }, {
 	set(target, prop, value) {
 		if (!(prop in target) || target[prop] != value) {
