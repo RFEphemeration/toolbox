@@ -1,14 +1,20 @@
 const html = new Proxy({
-	appendChildren(parent, ...children) {
+	process(func, ...children) {
 		for (let child of children) {
-			if (typeof child == 'string') {
-				parent.appendChild(document.createTextNode(child));
+			if (Array.isArray(child)) {
+				this.process(func, ...child);
+			} else if (typeof child == 'string') {
+				func(document.createTextNode(child));
 			} else if (typeof child == 'function') {
-				this.appendChildren(parent, child());
-			} else if (Array.isArray(child)) {
-				this.appendChildren(parent, ...child)
+				this.process(func, child());
+			} else if (child instanceof Promise) {
+				const temp = document.createElement('div');
+				child.then((fragment) => {
+					temp.replaceWith(fragment)
+				});
+				func(temp);
 			} else {
-				parent.appendChild(child);
+				func(child);
 			}
 		}
 	},
@@ -36,7 +42,7 @@ const html = new Proxy({
 	create(tagName, attributes = {}, ...children) {
 		let element = document.createElement(tagName);
 		this.setAttributes(element, attributes);
-		this.appendChildren(element, children);
+		this.process(element.appendChild.bind(element), ...children);
 		if ('refresh' in element) {
 			element.refresh();
 		}
@@ -45,12 +51,9 @@ const html = new Proxy({
 
 	insert(...elements) {
 		let script = document.currentScript;
-		for (let element of elements) {
-			if (typeof element == 'string') {
-				element = document.createTextNode(element);
-			}
+		this.process((element) => {
 			script.parentNode.insertBefore(element, script);
-		}
+		}, ...elements);
 	},
 
 	bind() {
@@ -138,6 +141,9 @@ const data = new Proxy({
 				listener.refresh = Function(listener.dataset.refresh);
 			} else if ('refreshPath' in listener.dataset) {
 				listener.refresh = utils.get(window, listener.dataset.refreshPath.split('.'));
+				if (listener.refresh == undefined) {
+					continue;
+				}
 			} else {
 				continue;
 			}

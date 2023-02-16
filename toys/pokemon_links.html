@@ -144,7 +144,19 @@
 	<script>html.insert(`${settings.name}`);</script>
 </div>
 
-<script type="text/javascript">
+<script>
+	let footer = utils.include('./component.html', false);
+	console.log(footer);
+</script>
+<script>utils.include('./component.html')</script>
+
+<script>html.insert(
+	span({}, "hi"),
+	utils.load('./component.html', true)
+);</script>
+
+
+<script>
 	data.query_listeners();
 </script>
 </body>
