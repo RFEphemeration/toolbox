@@ -1,0 +1,180 @@
+/* reset */
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+	background-repeat: no-repeat;
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+	vertical-align: baseline; /* consider middle */
+	font-family: inherit;
+	color: inherit;
+}
+
+[hidden] {
+	display: none !important;
+}
+
+::before,
+::after {
+	text-decoration: inherit;
+	vertical-align: inherit;
+}
+
+:where(:root) {
+	line-height: 1.5;
+	overflow-wrap: break-word;
+	tab-size: 4;
+}
+
+:where(nav) :where(ol, ul) {
+	list-style-type: none;
+}
+
+:where(pre) {
+	font-family: monospace;
+	font-size: 1rem;
+	overflow: auto;
+}
+
+:where(audio, canvas, iframe, img, svg, video) {
+	vertical-align: middle;
+}
+
+:where(svg:not([fill])) {
+	fill: currentColor;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+a:active, a:hover, a:focus {
+	color: inherit;
+}
+
+/* better defaults */
+
+body {
+	min-height: 100vh;
+	min-height: 100svh;
+	font-family: system-ui, sans-serif;
+}
+
+main {
+	padding: 1rem;
+}
+
+/* tools */
+
+.container {
+	max-width: 60rem;
+	margin-inline: auto;
+}
+
+.row {
+	display: flex;
+	flex-flow: row nowrap;
+	gap: 1rem;
+}
+
+.row.center {
+	justify-content: center;
+}
+
+.col {
+	display: flex;
+	flex-flow: row nowrap;
+	gap: 1rem;
+}
+
+.col.center {
+	align-items: center;
+}
+
+.row * {
+	flex: 1 1 auto;
+}
+
+/* house style */
+
+:root {
+
+	--light-green: rgb(169, 214, 188);
+	--lavender: rgb(173, 132, 245);
+	--dim-lavender: rgb(114, 85, 181);
+
+	--background-color: #eee;
+	--text-color: #222;
+	--card-background-color: #bbb;
+
+	--interactive-color: var(--lavender);
+	--interactive-accent-color: var(--dim-lavender);
+}
+
+body {
+	background-color: var(--background-color);
+	color: var(--text-color);
+}
+
+section, .card {
+	background-color: var(--card-background-color);
+	padding: 1rem;
+	border-radius: 1rem;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:not(.button) {
+	color: var(--interactive-color);
+}
+
+a:not(.button):hover {
+	text-decoration: underline;
+}
+
+button,
+a.button {
+	--raised-height: 0.25rem;
+	--padding-bottom: 0.5em;
+	padding: .5em 1.5em var(--padding-bottom) 1.5em;
+	border-radius: 1.5em;
+	background-color: var(--interactive-color);
+	border: 1px solid var(--interactive-accent-color);
+	box-shadow: 0 var(--raised-height) 0 0 var(--interactive-accent-color);
+	margin-bottom: var(--raised-height);
+	position: relative;
+}
+
+button:active,
+a.button:active {
+	color: inherit;
+	box-shadow: 0 calc(-1.4 * var(--raised-height)) 0 0 var(--interactive-accent-color);
+	padding-bottom: calc(var(--padding-bottom) - 0.4 * var(--raised-height));
+	margin-top: calc(1.4 * var(--raised-height));
+	margin-bottom: 0;
+}
+
+/* nitpicking
+button::after,
+a.button::after {
+	content: '';
+	height: 0.25rem;
+	background-color: var(--interactive-accent-color);
+	right: -1px;
+	top: 50%;
+	display: block;
+	width: 0.75px;
+	position: absolute;
+}
+
+button:active::after,
+a.button:active::after {
+	transform: translateY(-.3rem);
+}
+*/
