@@ -24,9 +24,13 @@
 }
 
 :where(:root) {
-	line-height: 1.5;
+	line-height: 1;
 	overflow-wrap: break-word;
 	tab-size: 4;
+}
+
+p {
+	line-height: 1.5;
 }
 
 :where(nav) :where(ol, ul) {
@@ -75,28 +79,39 @@ main {
 	margin-inline: auto;
 }
 
+.breakout {
+	margin-left: calc(-50vw + 50%);
+	margin-right: calc(-50vw + 50%);
+}
+
 .row {
 	display: flex;
 	flex-flow: row nowrap;
 	gap: 1rem;
+	align-items: flex-start;
 }
 
 .row.center {
 	justify-content: center;
 }
 
+.row.fill > * {
+	flex: 1 1 auto;
+}
+
+.row.space-evenly {
+	justify-content: space-evenly;
+}
+
 .col {
 	display: flex;
 	flex-flow: row nowrap;
 	gap: 1rem;
+	align-items: flex-start;
 }
 
 .col.center {
 	align-items: center;
-}
-
-.row * {
-	flex: 1 1 auto;
 }
 
 /* house style */
@@ -123,7 +138,7 @@ body {
 section, .card {
 	background-color: var(--card-background-color);
 	padding: 1rem;
-	border-radius: 1rem;
+	border-radius: 0.5rem;
 }
 
 a {
@@ -131,33 +146,53 @@ a {
 }
 
 a:not(.button) {
-	color: var(--interactive-color);
+	color: var(--interactive-accent-color);
 }
 
 a:not(.button):hover {
-	text-decoration: underline;
+	color: var(--text-color);
+}
+
+a[target="_blank"]::after {
+	content: '';
+	display: inline-block;
+	margin-left: 0.25em;
+	width: 0.875em;
+	height: 0.875em;
+	background-color: currentColor;
+	-webkit-mask: url(/images/external-link.svg) no-repeat 100% 100%;
+	mask: url(/images/external-link.svg) no-repeat 100% 100%;
+	-webkit-mask-size: cover;
+	mask-size: cover;
+	margin-bottom: -0.05em;
 }
 
 button,
 a.button {
 	--raised-height: 0.25rem;
 	--padding-bottom: 0.5em;
-	padding: .5em 1.5em var(--padding-bottom) 1.5em;
-	border-radius: 1.5em;
+	padding: .5em 1.5em 0.5em 1.5em;
+	border-radius: 0.25rem;
 	background-color: var(--interactive-color);
 	border: 1px solid var(--interactive-accent-color);
-	box-shadow: 0 var(--raised-height) 0 0 var(--interactive-accent-color);
-	margin-bottom: var(--raised-height);
+	box-shadow: 0 0.25rem 0 0 var(--interactive-accent-color);
+	margin-bottom: 0.25rem;
 	position: relative;
+	display: block;
 }
 
 button:active,
 a.button:active {
 	color: inherit;
-	box-shadow: 0 calc(-1.4 * var(--raised-height)) 0 0 var(--interactive-accent-color);
-	padding-bottom: calc(var(--padding-bottom) - 0.4 * var(--raised-height));
-	margin-top: calc(1.4 * var(--raised-height));
+	box-shadow: 0 -0.175rem 0 0 var(--interactive-accent-color);
+	padding-bottom: calc(0.5em - 0.1rem);
+	margin-top: 0.35rem;
 	margin-bottom: 0;
+}
+
+button:hover,
+a.button:hover {
+	border: 1px solid currentcolor;
 }
 
 /* nitpicking
