@@ -11,6 +11,7 @@
 	vertical-align: baseline; /* consider middle */
 	font-family: inherit;
 	color: inherit;
+	line-height: 1;
 }
 
 [hidden] {
@@ -114,6 +115,10 @@ main {
 	align-items: center;
 }
 
+.wrap {
+	flex-wrap: wrap;
+}
+
 /* house style */
 
 :root {
@@ -121,6 +126,7 @@ main {
 	--light-green: rgb(169, 214, 188);
 	--lavender: rgb(173, 132, 245);
 	--dim-lavender: rgb(114, 85, 181);
+	--dark-lavender: rgb(85, 32, 161);
 
 	--background-color: #eee;
 	--text-color: #222;
@@ -128,7 +134,18 @@ main {
 
 	--interactive-color: var(--lavender);
 	--interactive-accent-color: var(--dim-lavender);
+	--interactive-color-dark: var(--dark-lavender);
 }
+
+/*
+@media screen and (prefers-color-scheme: dark) {
+	:root {
+		--background-color: #000;
+		--text-color: #eee;
+		--card-background-color: #222;
+	}
+}
+*/
 
 body {
 	background-color: var(--background-color);
@@ -171,28 +188,119 @@ button,
 a.button {
 	--raised-height: 0.25rem;
 	--padding-bottom: 0.5em;
-	padding: .5em 1.5em 0.5em 1.5em;
+	padding: 0.5em 1.5em 0.5em 1.5em;
 	border-radius: 0.25rem;
 	background-color: var(--interactive-color);
 	border: 1px solid var(--interactive-accent-color);
-	box-shadow: 0 0.25rem 0 0 var(--interactive-accent-color);
+	margin-top: 0;
 	margin-bottom: 0.25rem;
 	position: relative;
 	display: block;
+	cursor: pointer;
+	transform-style: preserve-3d;
+
+	transition: margin-top 0.05s linear, margin-bottom 0.0357s linear 0.0143s, padding-bottom 0.0143s linear;
+	/* linear stops are not yet supported, this is equivalent to button_indent in reverse, and interruptable
+	transition: box-shadow 1s linear(0, 0.412 50%, 1),
+		margin-bottom 0.5s linear,
+		margin-top 1s linear(0, 0.286 50%, 1),
+		padding-bottom 0.5s linear 0.5s;
+	*/
+	/*transition: margin-top 1s ease-in, margin-bottom 0.5s linear 0.5s, box-shadow 1s ease-in, padding 0.5s;
+	
+	animation: 0.05s linear button_popup;
+	box-shadow: 0 0.25rem 0 0 var(--interactive-accent-color);
+	*/
+}
+
+button::before,
+a.button::before {
+	content: '';
+	transform: translateZ(-1px);
+	position: absolute;
+	background-color: var(--interactive-accent-color);
+	border-radius: 0.25rem;
+	inset: calc(0.075rem - 1px) -1px calc(-0.25rem - 1px) -1px;
+	transition: top 0.0357s linear 0.0143s, bottom 0.0357s linear 0.0143s, transform 0.0143s linear;
 }
 
 button:active,
 a.button:active {
 	color: inherit;
-	box-shadow: 0 -0.175rem 0 0 var(--interactive-accent-color);
+	margin-bottom: 0;
+	margin-top: 0.35rem;
 	padding-bottom: calc(0.5em - 0.1rem);
+	transition: margin-top 0.1s linear, margin-bottom 0.0714s linear, padding-bottom 0.0286s linear 0.0714s;
+
+	/* box-shadow: 0 -0.175rem 0 0 var(--interactive-accent-color);
+
+	
 	margin-top: 0.35rem;
 	margin-bottom: 0;
+	animation: button_indent 0.1s linear;
+	animation-direction: forward;
+	animation-fill-mode: forwards;
+	*/
+}
+
+button:active::before,
+a.button:active::before {
+	top: calc(-0.075rem - 1px);
+	bottom: -1px;
+	transform: translateZ(-1px) translateY(-0.1rem);
+	transition: top 0.0714s linear, bottom 0.0714s linear, transform 0.0286s linear 0.0714s;
+}
+
+@keyframes button_indent {
+	0% {
+		box-shadow: 0 0.25rem 0 0 var(--interactive-accent-color), 0 0 0 0 var(--interactive-accent-color);
+		padding-bottom: 0.5em;
+		margin-bottom: 0.25rem;
+		margin-top: 0;
+	}
+	20% {
+		box-shadow: 0 0.15rem 0 0 var(--interactive-accent-color), 0 0 0 0 var(--interactive-accent-color);
+		padding-bottom: 0.5em;
+		margin-bottom: 0.15rem;
+		margin-top: 0.1rem;
+	}
+	50% {
+		box-shadow: 0 0 0 0 var(--interactive-accent-color), 0 -0.075rem 0 0 var(--interactive-accent-color);
+		padding-bottom: 0.5em;
+		margin-top: 0.25rem;
+		margin-bottom: 0;
+	}
+	100% {
+		box-shadow: 0 0 0 0 var(--interactive-accent-color), 0 -0.175rem 0 0 var(--interactive-accent-color);
+		padding-bottom: calc(0.5em - 0.1rem);
+		margin-top: 0.35rem;
+		margin-bottom: 0;
+	}
 }
 
 button:hover,
 a.button:hover {
 	border: 1px solid currentcolor;
+}
+
+button.icon,
+a.button.icon {
+	padding-inline: 0.6em;
+	aspect-ratio: 1 / 1;
+}
+/*
+button.icon:active,
+a.button.icon:active {
+	padding-bottom: 0.3rem;
+}
+*/
+
+button img,
+a.button img {
+	display: block;
+	height: 1rem;
+	width: 1rem;
+	object-fit: contain;
 }
 
 /* nitpicking
@@ -211,5 +319,133 @@ a.button::after {
 button:active::after,
 a.button:active::after {
 	transform: translateY(-.3rem);
+}
+*/
+
+label {
+	display: inline-flex;
+	align-items: center;
+}
+
+input[type=checkbox] {
+	width: 3rem;
+	height: 1.5rem;
+	margin-right: 0.5rem;
+	margin-top: 0.2rem;
+	-webkit-appearance: none;
+	appearance: none;
+	position: relative;
+	cursor: pointer;
+}
+
+input[type=checkbox]::before {
+	content: '';
+	width: 2.75rem;
+	height: 1.5rem;
+	background: grey;
+	background: linear-gradient(to right, var(--interactive-color) 0 50%, rgba(0,0,0, 0.2) 50% 100%);
+	background-size: 200% 100%;
+	background-position-x: 80%;
+	display: block;
+	border-radius: 1.5rem;
+	position: absolute;
+	left: 0;
+	top: 0;
+	border: 1px solid var(--interactive-accent-color);
+	transition: 0.2s ease-out;
+}
+
+input[type=checkbox]:checked::before {
+	background-position-x: 20%;
+}
+
+input[type=checkbox]::after {
+	content: '';
+	position: absolute;
+	top: -0.2rem;
+	left: 0rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	background-color: var(--interactive-color);
+	border-radius: 0.75rem;
+	box-shadow: 0 0.2rem 0 0 var(--interactive-accent-color);
+	border: 1px solid var(--interactive-accent-color);
+	transition: left 0.2s ease-out;
+}
+
+input[type=checkbox]:hover::after {
+	border: 1px solid var(--text-color);
+}
+
+input[type=checkbox]:checked::after {
+	left: 1.25rem;
+}
+
+
+input[type=radio] {
+	width: 1.5rem;
+	height: 1.525rem;
+	margin-right: 0.5rem;
+	-webkit-appearance: none;
+	appearance: none;
+	position: relative;
+	cursor: pointer;
+	display: inline-block;
+}
+
+input[type=radio]::before {
+	content: "";
+	height: 1.425rem;
+	width: 1.5rem;
+	border-radius: 50%;
+	background-color: var(--interactive-accent-color);
+	position: absolute;
+	top: 0.125rem;
+	display: block;
+}
+
+input[type=radio]::after {
+	content: "";
+	height: 1.375rem;
+	width: 1.5rem;
+	border-radius: 50%;
+	background-color: var(--interactive-color);
+	border: 1px solid var(--interactive-accent-color);
+	position: absolute;
+	top: 0;
+	display: block;
+	transition: top 0.1s linear 0.05s, height 0.07s linear 0.05s;
+}
+
+input[type=radio]:checked::after,
+input[type=radio]:active::after {
+	pointer-events: none;
+	top: 0.3rem;
+	border: 1px solid black;
+	height: 1.275rem;
+	transition: top 0.2s, height 0.14s linear 0.06s;
+}
+
+input[type=radio]:hover::after {
+	border: 1px solid black;
+}
+
+
+/*
+.color_picker .area {
+	background-color: hsl(var(--color-picker-hue), 100%, 100%);
+	background: linear-gradient(top,
+			hsl(0, 0%, 100%) 0%,
+			hsla(0, 0%, 100%, 0) 50%,
+			hsla(0, 0%, 0%, 0) 50%,
+			hsl(0, 0%, 0%) 100%),
+		linear-gradient(left,
+			hsl(0, 0%, 50%) 0%,
+			hsla(0, 0%, 50%, 0) 100%);
+}
+
+.color_picker .alpha {
+	background: linear-gradient(left,
+		hsl())
 }
 */

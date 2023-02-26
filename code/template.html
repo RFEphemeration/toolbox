@@ -7,15 +7,31 @@
 	<link href="./style.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="./utils.js"></script>
 	<script type="text/javascript" src="./imperative-html-subset.js"></script>
+	<script>
+		data.set({
+			counter: 0,
+		});
+	</script>
 </head>
 <body>
 <main class="container">
-	<section class="row space-evenly">
-		<button>test button</button>
+	<section class="row space-evenly wrap">
+		<button onclick="data.counter += 1; data.notify();">increment</button>
+		<div data-listen="counter" data-refresh="this.innerText = data.counter"></div>
 		<a target="_blank">test link</a>
 		<a class="button" target="_blank">test link button</a>
+		<label class="toggle">
+			<input type="checkbox">
+			toggle me
+		</label>
+		<button class="icon"><img src="/images/external-link.svg"></button>
+		<input type="radio" name="other">
+		<input type="radio" name="other">
 	</section>
-	<div class="breakout">hi</div>
+	<div class="breakout" style="margin-top: 4rem">hi</div>
 </main>
+<script>
+	data.query_listeners();
+</script>
 </body>
 </html>
