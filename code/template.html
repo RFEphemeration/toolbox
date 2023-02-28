@@ -17,7 +17,8 @@
 <main class="container">
 	<section class="row space-evenly wrap">
 		<button onclick="data.counter += 1; data.notify();">increment</button>
-		<div data-listen="counter" data-refresh="this.innerText = data.counter"></div>
+		<button class="round" onclick="data.counter += 1; data.notify();">increment</button>
+		<div data-listen="counter" data-refresh="this.innerText = data.counter" style="width:2rem; text-align: center"></div>
 		<a target="_blank">test link</a>
 		<a class="button" target="_blank">test link button</a>
 		<label class="toggle">
@@ -25,8 +26,15 @@
 			toggle me
 		</label>
 		<button class="icon"><img src="/images/external-link.svg"></button>
-		<input type="radio" name="other">
-		<input type="radio" name="other">
+		<button class="icon round"><img src="/images/external-link.svg"></button>
+		<ul>
+			<li>
+				<input type="radio" name="other"> A
+			</li>
+			<li>
+				<input type="radio" name="other"> B
+			</li>
+		</ul>
 	</section>
 	<div class="breakout" style="margin-top: 4rem">hi</div>
 </main>

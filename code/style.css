@@ -34,8 +34,19 @@ p {
 	line-height: 1.5;
 }
 
-:where(nav) :where(ol, ul) {
+:where(ol, ul) {
 	list-style-type: none;
+}
+
+ol, ul {
+	display: flex;
+	flex-flow: column nowrap;
+	row-gap: 0.5rem;
+}
+
+li {
+	display: flex;
+	align-items: center;
 }
 
 :where(pre) {
@@ -133,7 +144,7 @@ main {
 	--card-background-color: #bbb;
 
 	--interactive-color: var(--lavender);
-	--interactive-accent-color: var(--dim-lavender);
+	--interactive-color-dim: var(--dim-lavender);
 	--interactive-color-dark: var(--dark-lavender);
 }
 
@@ -163,7 +174,7 @@ a {
 }
 
 a:not(.button) {
-	color: var(--interactive-accent-color);
+	color: var(--interactive-color-dim);
 }
 
 a:not(.button):hover {
@@ -186,21 +197,24 @@ a[target="_blank"]::after {
 
 button,
 a.button {
-	--raised-height: 0.25rem;
-	--padding-bottom: 0.5em;
-	padding: 0.5em 1.5em 0.5em 1.5em;
+	padding-inline: 1.5em;
+	margin-top: 0.175rem;
 	border-radius: 0.25rem;
-	background-color: var(--interactive-color);
-	border: 1px solid var(--interactive-accent-color);
-	margin-top: 0;
-	margin-bottom: 0.25rem;
+	/*height: calc(2em + 0.25rem - 0.175rem);
+	*/
+	text-align: top;
+	background-color: var(--interactive-color-dim);
+	border: 0px solid var(--interactive-color-dim);
 	position: relative;
-	display: block;
+	display: flex;
+	padding-top: calc(0.5em - 0.25rem);
+	padding-bottom: calc(0.5em + 0.25rem);
 	cursor: pointer;
-	transform-style: preserve-3d;
-
+	isolation: isolate;
+	transition: padding-top 0.05s linear, padding-bottom 0.05s linear;
+	/*
 	transition: margin-top 0.05s linear, margin-bottom 0.0357s linear 0.0143s, padding-bottom 0.0143s linear;
-	/* linear stops are not yet supported, this is equivalent to button_indent in reverse, and interruptable
+	linear stops are not yet supported, this is equivalent to button_indent in reverse, and interruptable
 	transition: box-shadow 1s linear(0, 0.412 50%, 1),
 		margin-bottom 0.5s linear,
 		margin-top 1s linear(0, 0.286 50%, 1),
@@ -209,31 +223,34 @@ a.button {
 	/*transition: margin-top 1s ease-in, margin-bottom 0.5s linear 0.5s, box-shadow 1s ease-in, padding 0.5s;
 	
 	animation: 0.05s linear button_popup;
-	box-shadow: 0 0.25rem 0 0 var(--interactive-accent-color);
+	box-shadow: 0 0.25rem 0 0 var(--interactive-color-dim);
 	*/
 }
 
 button::before,
 a.button::before {
 	content: '';
-	transform: translateZ(-1px);
+	z-index: -1;
 	position: absolute;
-	background-color: var(--interactive-accent-color);
+	background-color: var(--interactive-color);
+	border: 1px solid var(--interactive-color-dim);
 	border-radius: 0.25rem;
-	inset: calc(0.075rem - 1px) -1px calc(-0.25rem - 1px) -1px;
+	inset: -0.175rem 0 0.25rem 0;
+	transition: top 0.05s linear, bottom 0.0357s linear 0.0143s;
+	/*
 	transition: top 0.0357s linear 0.0143s, bottom 0.0357s linear 0.0143s, transform 0.0143s linear;
+	*/
 }
 
 button:active,
 a.button:active {
 	color: inherit;
-	margin-bottom: 0;
-	margin-top: 0.35rem;
+	padding-top: calc(0.5em + 0.1rem);
 	padding-bottom: calc(0.5em - 0.1rem);
+	transition: padding-top 0.1s linear, padding-bottom 0.1s linear;
+
+	/* box-shadow: 0 -0.175rem 0 0 var(--interactive-color-dim);
 	transition: margin-top 0.1s linear, margin-bottom 0.0714s linear, padding-bottom 0.0286s linear 0.0714s;
-
-	/* box-shadow: 0 -0.175rem 0 0 var(--interactive-accent-color);
-
 	
 	margin-top: 0.35rem;
 	margin-bottom: 0;
@@ -245,41 +262,43 @@ a.button:active {
 
 button:active::before,
 a.button:active::before {
-	top: calc(-0.075rem - 1px);
-	bottom: -1px;
-	transform: translateZ(-1px) translateY(-0.1rem);
+	top: 0.175rem;
+	bottom: 0;
+	transition: top 0.1s linear, bottom 0.0714s linear;
+	/*
 	transition: top 0.0714s linear, bottom 0.0714s linear, transform 0.0286s linear 0.0714s;
+	*/
 }
 
 @keyframes button_indent {
 	0% {
-		box-shadow: 0 0.25rem 0 0 var(--interactive-accent-color), 0 0 0 0 var(--interactive-accent-color);
+		box-shadow: 0 0.25rem 0 0 var(--interactive-color-dim), 0 0 0 0 var(--interactive-color-dim);
 		padding-bottom: 0.5em;
 		margin-bottom: 0.25rem;
 		margin-top: 0;
 	}
 	20% {
-		box-shadow: 0 0.15rem 0 0 var(--interactive-accent-color), 0 0 0 0 var(--interactive-accent-color);
+		box-shadow: 0 0.15rem 0 0 var(--interactive-color-dim), 0 0 0 0 var(--interactive-color-dim);
 		padding-bottom: 0.5em;
 		margin-bottom: 0.15rem;
 		margin-top: 0.1rem;
 	}
 	50% {
-		box-shadow: 0 0 0 0 var(--interactive-accent-color), 0 -0.075rem 0 0 var(--interactive-accent-color);
+		box-shadow: 0 0 0 0 var(--interactive-color-dim), 0 -0.075rem 0 0 var(--interactive-color-dim);
 		padding-bottom: 0.5em;
 		margin-top: 0.25rem;
 		margin-bottom: 0;
 	}
 	100% {
-		box-shadow: 0 0 0 0 var(--interactive-accent-color), 0 -0.175rem 0 0 var(--interactive-accent-color);
+		box-shadow: 0 0 0 0 var(--interactive-color-dim), 0 -0.175rem 0 0 var(--interactive-color-dim);
 		padding-bottom: calc(0.5em - 0.1rem);
 		margin-top: 0.35rem;
 		margin-bottom: 0;
 	}
 }
 
-button:hover,
-a.button:hover {
+button:hover::before,
+a.button:hover::before {
 	border: 1px solid currentcolor;
 }
 
@@ -303,12 +322,28 @@ a.button img {
 	object-fit: contain;
 }
 
+button.round,
+a.button.round,
+button.round::before,
+a.button.round::before {
+	border-radius: 1em;
+}
+
+button.icon.round,
+a.button.icon.round,
+button.icon.round::before,
+a.button.icon.round::before {
+	border-radius: 50%;
+}
+
+
+
 /* nitpicking
 button::after,
 a.button::after {
 	content: '';
 	height: 0.25rem;
-	background-color: var(--interactive-accent-color);
+	background-color: var(--interactive-color-dim);
 	right: -1px;
 	top: 50%;
 	display: block;
@@ -351,7 +386,7 @@ input[type=checkbox]::before {
 	position: absolute;
 	left: 0;
 	top: 0;
-	border: 1px solid var(--interactive-accent-color);
+	border: 1px solid var(--interactive-color-dim);
 	transition: 0.2s ease-out;
 }
 
@@ -368,8 +403,8 @@ input[type=checkbox]::after {
 	height: 1.5rem;
 	background-color: var(--interactive-color);
 	border-radius: 0.75rem;
-	box-shadow: 0 0.2rem 0 0 var(--interactive-accent-color);
-	border: 1px solid var(--interactive-accent-color);
+	box-shadow: 0 0.2rem 0 0 var(--interactive-color-dim);
+	border: 1px solid var(--interactive-color-dim);
 	transition: left 0.2s ease-out;
 }
 
@@ -398,7 +433,7 @@ input[type=radio]::before {
 	height: 1.425rem;
 	width: 1.5rem;
 	border-radius: 50%;
-	background-color: var(--interactive-accent-color);
+	background-color: var(--interactive-color-dim);
 	position: absolute;
 	top: 0.125rem;
 	display: block;
@@ -410,7 +445,7 @@ input[type=radio]::after {
 	width: 1.5rem;
 	border-radius: 50%;
 	background-color: var(--interactive-color);
-	border: 1px solid var(--interactive-accent-color);
+	border: 1px solid var(--interactive-color-dim);
 	position: absolute;
 	top: 0;
 	display: block;
