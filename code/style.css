@@ -200,8 +200,6 @@ a.button {
 	padding-inline: 1.5em;
 	margin-top: 0.175rem;
 	border-radius: 0.25rem;
-	/*height: calc(2em + 0.25rem - 0.175rem);
-	*/
 	text-align: top;
 	background-color: var(--interactive-color-dim);
 	border: 0px solid var(--interactive-color-dim);
@@ -212,19 +210,6 @@ a.button {
 	cursor: pointer;
 	isolation: isolate;
 	transition: padding-top 0.05s linear, padding-bottom 0.05s linear;
-	/*
-	transition: margin-top 0.05s linear, margin-bottom 0.0357s linear 0.0143s, padding-bottom 0.0143s linear;
-	linear stops are not yet supported, this is equivalent to button_indent in reverse, and interruptable
-	transition: box-shadow 1s linear(0, 0.412 50%, 1),
-		margin-bottom 0.5s linear,
-		margin-top 1s linear(0, 0.286 50%, 1),
-		padding-bottom 0.5s linear 0.5s;
-	*/
-	/*transition: margin-top 1s ease-in, margin-bottom 0.5s linear 0.5s, box-shadow 1s ease-in, padding 0.5s;
-	
-	animation: 0.05s linear button_popup;
-	box-shadow: 0 0.25rem 0 0 var(--interactive-color-dim);
-	*/
 }
 
 button::before,
@@ -237,9 +222,6 @@ a.button::before {
 	border-radius: 0.25rem;
 	inset: -0.175rem 0 0.25rem 0;
 	transition: top 0.05s linear, bottom 0.0357s linear 0.0143s;
-	/*
-	transition: top 0.0357s linear 0.0143s, bottom 0.0357s linear 0.0143s, transform 0.0143s linear;
-	*/
 }
 
 button:active,
@@ -248,16 +230,6 @@ a.button:active {
 	padding-top: calc(0.5em + 0.1rem);
 	padding-bottom: calc(0.5em - 0.1rem);
 	transition: padding-top 0.1s linear, padding-bottom 0.1s linear;
-
-	/* box-shadow: 0 -0.175rem 0 0 var(--interactive-color-dim);
-	transition: margin-top 0.1s linear, margin-bottom 0.0714s linear, padding-bottom 0.0286s linear 0.0714s;
-	
-	margin-top: 0.35rem;
-	margin-bottom: 0;
-	animation: button_indent 0.1s linear;
-	animation-direction: forward;
-	animation-fill-mode: forwards;
-	*/
 }
 
 button:active::before,
@@ -265,36 +237,6 @@ a.button:active::before {
 	top: 0.175rem;
 	bottom: 0;
 	transition: top 0.1s linear, bottom 0.0714s linear;
-	/*
-	transition: top 0.0714s linear, bottom 0.0714s linear, transform 0.0286s linear 0.0714s;
-	*/
-}
-
-@keyframes button_indent {
-	0% {
-		box-shadow: 0 0.25rem 0 0 var(--interactive-color-dim), 0 0 0 0 var(--interactive-color-dim);
-		padding-bottom: 0.5em;
-		margin-bottom: 0.25rem;
-		margin-top: 0;
-	}
-	20% {
-		box-shadow: 0 0.15rem 0 0 var(--interactive-color-dim), 0 0 0 0 var(--interactive-color-dim);
-		padding-bottom: 0.5em;
-		margin-bottom: 0.15rem;
-		margin-top: 0.1rem;
-	}
-	50% {
-		box-shadow: 0 0 0 0 var(--interactive-color-dim), 0 -0.075rem 0 0 var(--interactive-color-dim);
-		padding-bottom: 0.5em;
-		margin-top: 0.25rem;
-		margin-bottom: 0;
-	}
-	100% {
-		box-shadow: 0 0 0 0 var(--interactive-color-dim), 0 -0.175rem 0 0 var(--interactive-color-dim);
-		padding-bottom: calc(0.5em - 0.1rem);
-		margin-top: 0.35rem;
-		margin-bottom: 0;
-	}
 }
 
 button:hover::before,
@@ -307,12 +249,6 @@ a.button.icon {
 	padding-inline: 0.6em;
 	aspect-ratio: 1 / 1;
 }
-/*
-button.icon:active,
-a.button.icon:active {
-	padding-bottom: 0.3rem;
-}
-*/
 
 button img,
 a.button img {
@@ -335,27 +271,6 @@ button.icon.round::before,
 a.button.icon.round::before {
 	border-radius: 50%;
 }
-
-
-
-/* nitpicking
-button::after,
-a.button::after {
-	content: '';
-	height: 0.25rem;
-	background-color: var(--interactive-color-dim);
-	right: -1px;
-	top: 50%;
-	display: block;
-	width: 0.75px;
-	position: absolute;
-}
-
-button:active::after,
-a.button:active::after {
-	transform: translateY(-.3rem);
-}
-*/
 
 label {
 	display: inline-flex;
