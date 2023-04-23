@@ -36,9 +36,6 @@ p {
 
 :where(ol, ul) {
 	list-style-type: none;
-}
-
-ol, ul {
 	display: flex;
 	flex-flow: column nowrap;
 	row-gap: 0.5rem;
