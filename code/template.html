@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="./utils.js"></script>
 	<script type="text/javascript" src="./imperative-html-subset.js"></script>
 	<script>
-		data.set({
+		data.set_silently({
 			counter: 0,
 		});
 	</script>
@@ -19,6 +19,10 @@
 		<button onclick="data.counter += 1; data.notify();">increment</button>
 		<button class="round" onclick="data.counter += 1; data.notify();">increment</button>
 		<div data-listen="counter" data-refresh="this.innerText = data.counter" style="width:2rem; text-align: center"></div>
+		<div data-value="counter"></div>
+		<script>
+			html.insert(html.span({}, data.value("counter")));
+		</script>
 		<a target="_blank">test link</a>
 		<a class="button" target="_blank">test link button</a>
 		<label class="toggle">

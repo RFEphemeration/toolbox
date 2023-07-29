@@ -195,7 +195,6 @@ a[target="_blank"]::after {
 button,
 a.button {
 	padding-inline: 1.5em;
-	margin-top: 0.175rem;
 	border-radius: 0.25rem;
 	text-align: top;
 	background-color: var(--interactive-color-dim);
@@ -207,6 +206,11 @@ a.button {
 	cursor: pointer;
 	isolation: isolate;
 	transition: padding-top 0.05s linear, padding-bottom 0.05s linear;
+	border-top: 0.175rem solid transparent;
+    border-top-right-radius: 0.25rem 0.425rem;
+    border-top-left-radius: 0.25rem 0.425rem;
+    isolation: isolate;
+    background-clip: padding-box;
 }
 
 button::before,

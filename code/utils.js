@@ -47,5 +47,14 @@ const utils = {
 			script.parentNode.insertBefore(loaded, script);
 		}
 	},
+
+	namespace() {
+		let refs = {};
+		let ref = (name, value) => {
+			refs[name] = value;
+			return value;
+		}
+		return [ref, refs];
+	},
 };
 
