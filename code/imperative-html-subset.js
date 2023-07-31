@@ -61,13 +61,6 @@ const html = new Proxy({
 		return element;
 	},
 
-	insert(...elements) {
-		let script = document.currentScript;
-		this.process((element) => {
-			script.parentNode.insertBefore(element, script);
-		}, ...elements);
-	},
-
 	bind() {
 		let bound = {};
 		for (const prop in this) {

@@ -16,12 +16,12 @@
 <body>
 <main class="container">
 	<section class="row space-evenly wrap">
-		<button onclick="data.counter += 1; data.notify();">increment</button>
-		<button class="round" onclick="data.counter += 1; data.notify();">increment</button>
+		<button onclick="data.counter += 1;">increment</button>
+		<button class="round" onclick="data.counter += 1;">increment</button>
 		<div data-listen="counter" data-refresh="this.innerText = data.counter" style="width:2rem; text-align: center"></div>
 		<div data-value="counter"></div>
 		<script>
-			html.insert(html.span({}, data.value("counter")));
+			utils.insert({}, html.span({}, data.value("counter")));
 		</script>
 		<a target="_blank">test link</a>
 		<a class="button" target="_blank">test link button</a>
@@ -40,7 +40,7 @@
 			</li>
 		</ul>
 	</section>
-	<div class="breakout" style="margin-top: 4rem">hi</div>
+	<div class="breakout" style="margin-top: 4rem; background-color: black; color: white; padding: 1rem;">hi</div>
 </main>
 <script>
 	data.query_listeners();
